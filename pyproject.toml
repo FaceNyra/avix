@@ -1,0 +1,69 @@
+[project]
+name = "avix"
+version = "1.0.0"
+description = "Production-ready Telegram bot for team and task management"
+readme = "README.md"
+requires-python = ">=3.13"
+license = { text = "MIT" }
+authors = [{ name = "Avix Team" }]
+dependencies = [
+    "aiogram>=3.29.1",
+    "alembic>=1.18.5",
+    "apscheduler>=3.10,<4",
+    "asyncpg>=0.31.0",
+    "fastapi>=0.115.0",
+    "httpx>=0.28.0",
+    "pydantic>=2.10.0",
+    "pydantic-settings>=2.14.2",
+    "psycopg[binary]>=3.2.0",
+    "pyjwt>=2.10.0",
+    "python-multipart>=0.0.20",
+    "redis>=5.2.0",
+    "sqlalchemy[asyncio]>=2.0.51",
+    "structlog>=26.1.0",
+    "uvicorn[standard]>=0.34.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "mypy>=1.15.0",
+    "pre-commit>=4.2.0",
+    "pytest>=8.3.0",
+    "pytest-asyncio>=0.25.0",
+    "pytest-cov>=6.0.0",
+    "ruff>=0.9.0",
+    "types-redis>=4.6.0",
+]
+
+[project.scripts]
+avix-bot = "app.main:run_bot"
+avix-api = "app.main:run_api"
+avix-worker = "app.main:run_worker"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/app"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "ASYNC"]
+
+[tool.mypy]
+python_version = "3.13"
+strict = true
+packages = ["app"]
+mypy_path = "src"
+ignore_missing_imports = true
